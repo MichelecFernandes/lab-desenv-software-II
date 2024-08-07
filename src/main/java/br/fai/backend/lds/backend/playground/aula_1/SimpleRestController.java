@@ -1,5 +1,6 @@
 package br.fai.backend.lds.backend.playground.aula_1;
 
+import br.fai.backend.lds.backend.playground.aula_1.service.PlaygroundService;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -12,13 +13,16 @@ import java.net.URI;
 @RestController
 public class SimpleRestController {
 
+    private PlaygroundService playgroundService = new PlaygroundService();
+
     //@GetMapping serve para deixar o metodo expostp
     @GetMapping("listar")
     public ResponseEntity<UserPlayground1> get(){
-        UserPlayground1 user = new UserPlayground1();
+        UserPlayground1 user = playgroundService.find();
         user.setId(10);
         user.setEmail("user01@email.com");
         user.setName("first name");
+
 
         return ResponseEntity.ok().body(user);
     }
