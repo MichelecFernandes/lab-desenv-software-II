@@ -19,11 +19,7 @@ public class SimpleRestController {
     @GetMapping("listar")
     public ResponseEntity<UserPlayground1> get(){
         UserPlayground1 user = playgroundService.find();
-        user.setId(10);
-        user.setEmail("user01@email.com");
-        user.setName("first name");
-
-
+        System.out.println(user);
         return ResponseEntity.ok().body(user);
     }
 
