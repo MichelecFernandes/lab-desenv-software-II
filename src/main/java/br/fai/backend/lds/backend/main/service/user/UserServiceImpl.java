@@ -2,11 +2,12 @@ package br.fai.backend.lds.backend.main.service.user;
 
 import br.fai.backend.lds.backend.main.domain.UserModel;
 import br.fai.backend.lds.backend.main.port.service.crud.CrudService;
+import br.fai.backend.lds.backend.main.port.service.user.ReadByEmailService;
 import br.fai.backend.lds.backend.main.port.service.user.UpdatePasswordService;
 
 import java.util.List;
 
-public class UserServiceImpl implements CrudService<UserModel>, UpdatePasswordService {
+public class UserServiceImpl implements CrudService<UserModel>, UpdatePasswordService, ReadByEmailService {
 
 
     @Override
@@ -36,5 +37,10 @@ public class UserServiceImpl implements CrudService<UserModel>, UpdatePasswordSe
     @Override
     public boolean updatePassword(int id, String oldPassword, String newPassword) {
         return false;
+    }
+
+    @Override
+    public UserModel findByEmail(String email) {
+        return null;
     }
 }
