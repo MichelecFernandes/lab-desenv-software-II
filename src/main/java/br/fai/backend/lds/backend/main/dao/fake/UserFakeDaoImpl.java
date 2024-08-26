@@ -2,6 +2,7 @@ package br.fai.backend.lds.backend.main.dao.fake;
 
 import br.fai.backend.lds.backend.main.domain.UserModel;
 import br.fai.backend.lds.backend.main.port.dao.user.UserDao;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -54,16 +55,41 @@ public class UserFakeDaoImpl implements UserDao {
 
     @Override
     public int add(UserModel entity) {
-        return 0;
+        final int id = getNextId();
+        entity.setId(id);
+        users.add(entity);
+        return id;
     }
 
     @Override
-    public int remove(int id) {
-        return 0;
+    public void remove(int id) {
+        int itemIndex = -1;
+
+        for(int i = 0; i < users.size(); i++){
+            UserModel user = users.get(i);
+            if(user.getId() == id) {
+                itemIndex = i;
+                break;
+            }
+
+        }
+
+    if(itemIndex == -1){
+        return;
+    }
+
+    UserModel removeEntity = users.remove(itemIndex);
+    System.out.println("O usuario " + removeEntity.getFullName() + " foi removido. ID do usuario removido: " + removeEntity.getId());
+
     }
 
     @Override
     public UserModel readyById(int id) {
+        for(UserModel user: users){
+            if(user.getId() == id){
+                return user;
+            }
+        }
         return null;
     }
 
@@ -74,16 +100,26 @@ public class UserFakeDaoImpl implements UserDao {
 
     @Override
     public void updateInformation(int id, UserModel entity) {
+        UserModel user = readyById(id);
+        user.setFullName(entity.getFullName());
+
 
     }
 
     @Override
     public UserModel readByEmail(String email) {
+        for(UserModel user : users){
+            if(user.getEmail().equalsIgnoreCase((email))){
+                return user;
+            }
+        }
         return null;
     }
 
     @Override
     public boolean updatePassword(int id, String newPassword) {
-        return false;
+        UserModel user = readyById(id);
+        user.setPassword(newPassword);
+        return true;
     }
 }
