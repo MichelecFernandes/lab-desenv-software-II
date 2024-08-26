@@ -13,4 +13,8 @@ public class UserModel {
     private String email;
     private String password;
     private String fullName;
+
+    //DTO = data transfer object
+
+
 }

@@ -20,17 +20,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int create(UserModel entity) {
-        return 0;
+        if(entity == null){
+            return 0;
+        }
+        if(entity.getFullName().isEmpty() || entity.getPassword().isEmpty() || entity.getEmail().isEmpty()){
+            return 0;
+        }
+
+        int id = userDao.add(entity);
+        return id;
     }
 
     @Override
     public void delete(int id) {
+        if(id < 0){
+            return;
+        }
+
+        userDao.remove(id);
 
     }
 
     @Override
     public UserModel findById(int id) {
-        return null;
+        if(id < 0){
+            return null;
+        }
+        UserModel user = userDao.readyById(id);
+        return user;
     }
 
     @Override
@@ -42,6 +59,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(int id, UserModel entity) {
+        UserModel user = findById(id);
+        if(user == null){
+            return;
+        }
+        userDao.updateInformation(id, entity);
 
     }
 
@@ -52,6 +74,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updatePassword(int id, String oldPassword, String newPassword) {
+        UserModel user = findById(id);
+        if(user == null){
+            return false;
+        }
+        if(!user.getPassword().equals((oldPassword))){
+            return false;
+        }
+
+        boolean response = userDao.updatePassword(id, newPassword);
         return false;
     }
+
 }
