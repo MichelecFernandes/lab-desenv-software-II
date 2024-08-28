@@ -69,7 +69,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel findByEmail(String email) {
+        if (email.isEmpty()) {
             return null;
+        }
+        return userDao.readByEmail(email);
     }
 
     @Override
