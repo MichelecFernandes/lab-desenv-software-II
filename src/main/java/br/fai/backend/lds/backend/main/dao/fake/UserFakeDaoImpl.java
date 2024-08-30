@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class UserFakeDaoImpl implements UserDao {
     private static List<UserModel> users = new ArrayList<>();
 

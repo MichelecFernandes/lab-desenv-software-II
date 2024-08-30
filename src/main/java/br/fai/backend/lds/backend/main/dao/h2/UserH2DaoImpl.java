@@ -17,6 +17,8 @@ public class UserH2DaoImpl implements UserDao {
 
     public UserH2DaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+
+        System.out.println("Ganhei uma instancia do UserH2Dao");
     }
 
     @Override
