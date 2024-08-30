@@ -4,11 +4,13 @@ import br.fai.backend.lds.backend.main.domain.UserModel;
 import br.fai.backend.lds.backend.main.port.dao.user.UserDao;
 import br.fai.backend.lds.backend.main.port.service.crud.UpdateService;
 import br.fai.backend.lds.backend.main.port.service.user.UserService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
@@ -22,6 +24,7 @@ public class UserServiceImpl implements UserService {
     public int create(UserModel entity) {
         if(entity == null){
             return 0;
+
         }
         if(entity.getFullName().isEmpty() || entity.getPassword().isEmpty() || entity.getEmail().isEmpty()){
             return 0;

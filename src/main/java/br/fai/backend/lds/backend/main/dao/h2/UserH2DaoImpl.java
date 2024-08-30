@@ -28,7 +28,7 @@ public class UserH2DaoImpl implements UserDao {
         parameters.put("fullName: ", entity.getFullName());
 
         final Number id = simpleJdbcInsert.executeAndReturnKey(parameters);
-        return 0;
+        return id.intValue();
     }
 
     @Override
@@ -40,26 +40,62 @@ public class UserH2DaoImpl implements UserDao {
 
     @Override
     public UserModel readyById(int id) {
-        return null;
+        final UserModel entity = jdbcTemplate.queryForObject("SELECT * FROM user_model WHERE id = ", new Object[]{id},(rs,rowNum) ->
+                new UserModel(
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("fullName")
+
+                ));
+        return entity;
     }
 
     @Override
     public List<UserModel> readAll() {
-        return null;
+        final List<UserModel> entities = jdbcTemplate.query("SELECT * FROM user_model", new Object[]{},(rs,rowNum) ->
+                new UserModel(
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("fullName")
+
+                ));
+
+        return entities;
     }
 
     @Override
     public void updateInformation(int id, UserModel entity) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("UPDATE user_model SET");
+        stringBuilder.append(" fullName = ? ");
+        stringBuilder.append(" WHERE id = ? ");
+        jdbcTemplate.update(stringBuilder.toString(), entity.getFullName(),id);
 
     }
 
     @Override
     public UserModel readByEmail(String email) {
-        return null;
+        final UserModel entity = jdbcTemplate.queryForObject("SELECT * FROM user_model WHERE email = ?", new Object[]{email},(rs,rowNum) ->
+                new UserModel(
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("fullName")
+
+                ));
+        return entity;
     }
 
     @Override
     public boolean updatePassword(int id, String newPassword) {
-        return false;
+        final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("UPDATE user_model SET");
+        stringBuilder.append(" password = ? ");
+        stringBuilder.append(" WHERE id = ? ");
+        final int updateItems = jdbcTemplate.update(stringBuilder.toString(), newPassword,id);
+        return updateItems != 0;
+
     }
 }
