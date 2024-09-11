@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserPostgresDaoImpl implements UserDao {
@@ -27,11 +26,11 @@ public class UserPostgresDaoImpl implements UserDao {
     @Override
     public int add(UserModel entity) {
 
-       String sql = "INSERT INTO user_model(password, fullname, email) ";
-       sql+= " VALUES(?, ?, ?);";
+        String sql = "INSERT INTO user_model(password, fullname, email) ";
+        sql += " VALUES(?, ?, ?);";
 
-       // Quem faz a connection é o spring
-       // Connection connection;
+        // Quem faz a connection é o spring
+        // Connection connection;
 
         // Preapara a chamada da sql
         PreparedStatement preparedStatement;
@@ -50,7 +49,7 @@ public class UserPostgresDaoImpl implements UserDao {
             preparedStatement.execute();
 
             resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 final int id = resultSet.getInt(1);
                 entity.setId(id);
 
