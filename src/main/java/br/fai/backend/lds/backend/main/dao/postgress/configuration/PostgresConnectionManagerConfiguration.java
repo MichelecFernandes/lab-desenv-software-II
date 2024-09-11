@@ -1,8 +1,10 @@
 package br.fai.backend.lds.backend.main.dao.postgress.configuration;
 
 
+import br.fai.backend.lds.backend.main.port.service.util.ResourceFileService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.*;
 
 @Configuration
@@ -57,6 +60,34 @@ public class PostgresConnectionManagerConfiguration {
         hikariConfig.setUsername(databaseUserName);
         hikariConfig.setPassword(databasePassword);
         return new HikariDataSource(hikariConfig).getConnection();
+
+    }
+
+    @Autowired
+    private ResourceFileService resourceFileService;
+
+    @Bean
+    @DependsOn("getConnection")
+    public boolean createTableAndInsertData() throws SQLException, IOException {
+        Connection getConnection = getConnection();
+
+        final String basePath = "lds-db-scripts";
+        final String createTable = resourceFileService.
+                read(basePath + "/create-tables-postgres.sql");
+        PreparedStatement createStatement = getConnection.prepareStatement(createTable);
+        createStatement.executeUpdate();
+        createStatement.close();
+
+
+        final String insertData = resourceFileService.read(basePath + "/insert-data.sql");
+
+        PreparedStatement insertStatement = getConnection.prepareStatement(insertData);
+        insertStatement.execute();
+        insertStatement.close();
+
+
+        return true;
+
 
     }
 
