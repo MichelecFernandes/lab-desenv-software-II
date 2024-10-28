@@ -4,6 +4,10 @@ import br.fai.backend.lds.backend.main.dao.fake.UserFakeDaoImpl;
 import br.fai.backend.lds.backend.main.dao.h2.UserH2DaoImpl;
 import br.fai.backend.lds.backend.main.dao.postgress.UserPostgresDaoImpl;
 import br.fai.backend.lds.backend.main.port.dao.user.UserDao;
+import br.fai.backend.lds.backend.main.port.service.authentication.AuthenticationService;
+import br.fai.backend.lds.backend.main.port.service.user.UserService;
+import br.fai.backend.lds.backend.main.service.authentication.BasicAuthenticationServiceImpl;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -30,6 +34,12 @@ public class AppConfiguration {
     @Profile("prod")
     public UserDao getUserDao(final Connection connection) {
         return new UserPostgresDaoImpl(connection);
+    }
+
+    @Bean
+    @Profile("prod")
+    public AuthenticationService getAuthenticationService(UserService userService){
+        return new BasicAuthenticationServiceImpl(userService);
     }
 
 }

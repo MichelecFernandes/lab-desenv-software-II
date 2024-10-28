@@ -1,6 +1,8 @@
 package br.fai.backend.lds.backend.main.port.service.authentication;
 
+import br.fai.backend.lds.backend.main.domain.UserModel;
+
 public interface AuthenticationService {
-    void authentication(final String email, final String password);
+    UserModel authenticate(final String email, final String password);
 
 }

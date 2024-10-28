@@ -22,21 +22,12 @@ public class UserRestController {
         this.userService = userService;
     }
 
-
     @GetMapping()
     //JAVA BEAN
     public ResponseEntity<List<UserModel>> getEntities(){
-        // Posso fazer como forma abaixo
-//        UserServiceImpl service = new UserServiceImpl();
-//        service.findAll();
-
         List<UserModel> users = userService.findAll();
-
-
         return ResponseEntity.ok().body(users);
     }
-
-
 
     @GetMapping("/{id}")
     public ResponseEntity<UserModel> getEntityById(@PathVariable final int id){
@@ -75,12 +66,6 @@ public class UserRestController {
     @PutMapping("/update-password")
     public ResponseEntity<Void> updatePassword(@RequestBody final UpdatePasswordDto data){
         final boolean response = userService.updatePassword(data.getId(), data.getOldPassword(),data.getNewPassword());
-
-//        if(response){
-//            return ResponseEntity.badRequest().build();
-//        }
-//        return ResponseEntity.ok().build();
-
         return response?
                 ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
 
