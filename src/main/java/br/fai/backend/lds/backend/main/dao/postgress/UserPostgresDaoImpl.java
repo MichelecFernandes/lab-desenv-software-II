@@ -155,7 +155,7 @@ public class UserPostgresDaoImpl implements UserDao {
             }
             resultSet.close();
             preparedStatement.close();
-            return null;
+            return users;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
