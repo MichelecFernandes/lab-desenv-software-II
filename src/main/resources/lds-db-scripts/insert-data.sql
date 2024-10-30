@@ -1,6 +1,8 @@
-insert into user_model (email, fullname, password) values ('a@a', 'tiburssin tiburssius', 'a');
-insert into user_model (email, fullname, password) values ('s@s', 'aroldo aroldus', 'a');
-insert into user_model (email, fullname, password) values ('d@d', 'cabral cabralzius', 'a');
-insert into user_model (email, fullname, password) values ('f@f', 'tonin toninhus', 'a');
-insert into user_model (email, fullname, password) values ('g@g', 'g g', 'a');
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+insert into user_model (email, fullname, password, role) values ('a@a', 'tiburssin tiburssius', crypt('a', gen_salt('bf')), 'ADMINISTRATOR');
+insert into user_model (email, fullname, password, role) values ('s@s', 'aroldo aroldus', crypt('a', gen_salt('bf')), 'ADMINISTRATOR');
+insert into user_model (email, fullname, password, role)  values ('d@d', 'cabral cabralzius', crypt('a', gen_salt('bf')), 'USER');
+insert into user_model (email, fullname, password, role)  values ('f@f', 'tonin toninhus', crypt('a', gen_salt('bf')), 'USER');
+insert into user_model (email, fullname, password, role) values ('g@g', 'g g', crypt('a', gen_salt('bf')), 'USER');
 
