@@ -53,4 +53,10 @@ public class AppConfiguration {
                 description("LDS API"));
     }
 
+    @Bean
+    @Profile("sec")
+    public AuthenticationService basicAuthenticationService(final UserService userService){
+        return new BasicAuthenticationServiceImpl(userService);
+    }
+
 }
