@@ -28,8 +28,8 @@ public class UserPostgresDaoImpl implements UserDao {
     @Override
     public int add(UserModel entity) {
 
-        String sql = "INSERT INTO user_model(password, fullname, email) ";
-        sql += " VALUES(?, ?, ?);";
+        String sql = "INSERT INTO user_model(password, fullname, email, role) ";
+        sql += " VALUES(?, ?, ?, ?);";
 
         // Quem faz a connection é o spring
         // Connection connection;
@@ -47,6 +47,7 @@ public class UserPostgresDaoImpl implements UserDao {
             preparedStatement.setString(1, entity.getPassword());
             preparedStatement.setString(2, entity.getFullName());
             preparedStatement.setString(3, entity.getEmail());
+            preparedStatement.setString(4, entity.getRole().name());
 
             preparedStatement.execute();
 
@@ -114,6 +115,7 @@ public class UserPostgresDaoImpl implements UserDao {
                 user.setFullName(resultSet.getString("fullName"));
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
+                user.setRole(UserModel.UserRole.valueOf(resultSet.getString("role")));
                 logger.log(Level.INFO, "Entidade com id " + id + "encontrada com sucesso");
 
                 return user;
@@ -150,6 +152,7 @@ public class UserPostgresDaoImpl implements UserDao {
                 user.setFullName(resultSet.getString("fullName"));
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
+                user.setRole(UserModel.UserRole.valueOf(resultSet.getString("role")));
                 users.add(user);
 
             }
@@ -194,6 +197,7 @@ public class UserPostgresDaoImpl implements UserDao {
                 user.setId(resultSet.getInt("id"));
                 user.setFullName(resultSet.getString("fullName"));
                 user.setPassword(resultSet.getString("password"));
+                user.setRole(UserModel.UserRole.valueOf(resultSet.getString("role")));
                 logger.log(Level.INFO, "Entidade com email " + email + " encontrada com sucesso");
 
                 return user;

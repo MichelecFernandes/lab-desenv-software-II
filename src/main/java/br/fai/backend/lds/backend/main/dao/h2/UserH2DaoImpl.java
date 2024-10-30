@@ -28,6 +28,7 @@ public class UserH2DaoImpl implements UserDao {
         parameters.put("email: ", entity.getEmail());
         parameters.put("password: ", entity.getPassword());
         parameters.put("fullName: ", entity.getFullName());
+        parameters.put("role", entity.getRole().name());
 
         final Number id = simpleJdbcInsert.executeAndReturnKey(parameters);
         return id.intValue();
@@ -47,7 +48,8 @@ public class UserH2DaoImpl implements UserDao {
                         rs.getInt("id"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        rs.getString("fullName")
+                        rs.getString("fullName"),
+                        UserModel.UserRole.valueOf(rs.getString("role"))
 
                 ));
         return entity;
@@ -60,7 +62,8 @@ public class UserH2DaoImpl implements UserDao {
                         rs.getInt("id"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        rs.getString("fullName")
+                        rs.getString("fullName"),
+                        UserModel.UserRole.valueOf(rs.getString("role"))
 
                 ));
 
@@ -84,7 +87,8 @@ public class UserH2DaoImpl implements UserDao {
                         rs.getInt("id"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        rs.getString("fullName")
+                        rs.getString("fullName"),
+                        UserModel.UserRole.valueOf(rs.getString("role"))
 
                 ));
         return entity;
