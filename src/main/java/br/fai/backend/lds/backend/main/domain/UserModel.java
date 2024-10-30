@@ -13,8 +13,12 @@ public class UserModel {
     private String email;
     private String password;
     private String fullName;
-
+    private UserRole role;
     //DTO = data transfer object
 
+    public enum UserRole{
+        ADMINISTRATOR,
+        USER
+    }
 
 }
