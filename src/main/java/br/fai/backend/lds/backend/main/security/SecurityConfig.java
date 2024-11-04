@@ -7,11 +7,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.swing.*;
 import java.util.List;
 
 @Profile("sec")
@@ -25,6 +28,31 @@ public class SecurityConfig {
     //Precisar decorar para prova
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // O cors habilita a requisicao do mundo externo para nossa aplicacao
+        // csrf = cross-site request forgery (falsificação de solicitação entre sites)
+        // AuhorizeRequets passo os endpoints que tal usuario pode acessar
+        // SessionManager.STATELESS para nao segurar  asessao do usuario
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(
+                    auth -> auth.requestMatchers(
+                            "/listar",
+                            "/swagger-ui/index.html",
+                            "/swagger-ui/**",
+                            "/v3/api-docs/**"
+                    ).permitAll()
+                     .anyRequest().authenticated()
+            )
+            .sessionManagement(
+                    session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            );
+
+
+
+
+
+
         return http.build();
     }
 
