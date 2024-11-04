@@ -41,13 +41,6 @@ public class AppConfiguration {
     }
 
     @Bean
-    @Profile("prod")
-    public AuthenticationService getAuthenticationService(UserService userService){
-        return new BasicAuthenticationServiceImpl(userService);
-    }
-
-
-    @Bean
     public OpenAPI customOpenApi(){
         return new OpenAPI().info(new Info().
                 title("LDS").
@@ -56,9 +49,14 @@ public class AppConfiguration {
     }
 
     @Bean
+    @Profile("prod")
+    public AuthenticationService getAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder){
+        return new BasicAuthenticationServiceImpl(userService, passwordEncoder);
+    }
+    @Bean
     @Profile("sec")
-    public AuthenticationService basicAuthenticationService(final UserService userService){
-        return new BasicAuthenticationServiceImpl(userService);
+    public AuthenticationService basicAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder){
+        return new BasicAuthenticationServiceImpl(userService, passwordEncoder);
     }
 
     @Bean

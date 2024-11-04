@@ -196,6 +196,7 @@ public class UserPostgresDaoImpl implements UserDao {
                 final UserModel user = new UserModel();
                 user.setId(resultSet.getInt("id"));
                 user.setFullName(resultSet.getString("fullName"));
+                user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
                 user.setRole(UserModel.UserRole.valueOf(resultSet.getString("role")));
                 logger.log(Level.INFO, "Entidade com email " + email + " encontrada com sucesso");
