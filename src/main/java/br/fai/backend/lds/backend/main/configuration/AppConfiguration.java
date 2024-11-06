@@ -7,6 +7,7 @@ import br.fai.backend.lds.backend.main.port.dao.user.UserDao;
 import br.fai.backend.lds.backend.main.port.service.authentication.AuthenticationService;
 import br.fai.backend.lds.backend.main.port.service.user.UserService;
 import br.fai.backend.lds.backend.main.service.authentication.BasicAuthenticationServiceImpl;
+import br.fai.backend.lds.backend.main.service.authentication.JwtAuthenticationServiceImpl;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -50,13 +51,13 @@ public class AppConfiguration {
 
     @Bean
     @Profile("prod")
-    public AuthenticationService getAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder){
+    public AuthenticationService basicAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder){
         return new BasicAuthenticationServiceImpl(userService, passwordEncoder);
     }
     @Bean
     @Profile("sec")
-    public AuthenticationService basicAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder){
-        return new BasicAuthenticationServiceImpl(userService, passwordEncoder);
+    public AuthenticationService jwtAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder){
+        return new JwtAuthenticationServiceImpl(userService, passwordEncoder);
     }
 
     @Bean
