@@ -34,7 +34,7 @@ public class JwtServiceImpl implements JwtService{
     public Claims getAllClaimsFromToken(String token) {
         return Jwts
                 .parserBuilder()
-                .setSigningKey("help")
+                .setSigningKey(secret)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -75,4 +75,6 @@ public class JwtServiceImpl implements JwtService{
                 .signWith(SignatureAlgorithm.HS256,secret)
                 .compact();
     }
+
+
 }
