@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 //@RestController serve para deixar a classe exposta
 @RestController
@@ -50,5 +51,18 @@ public class SimpleRestController {
         return ResponseEntity.noContent().build();
 
     }
+
+    @GetMapping("/good-morning")
+    public ResponseEntity<List<String>> getGoodMorning(){
+        final List<String> list = List.of("bom", "dia");
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/good-night")
+    public ResponseEntity<List<String>> getGoodNight(){
+        final List<String> list = List.of("boa", "noite");
+        return ResponseEntity.ok().body(list);
+    }
+
 
 }
