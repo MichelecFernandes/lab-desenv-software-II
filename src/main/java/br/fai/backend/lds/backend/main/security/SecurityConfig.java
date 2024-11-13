@@ -1,5 +1,6 @@
 package br.fai.backend.lds.backend.main.security;
 
+import br.fai.backend.lds.backend.main.domain.UserModel;
 import io.swagger.v3.oas.models.headers.Header;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,7 +25,15 @@ import java.util.List;
 //Essa classe vai ser lavantada sempre que rodar a aplicacao por conta do Configuration, ela nasce quando o play acontece
 @Profile("sec")
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig  {
+
+    private final JwtRequestFilter jwtRequestFilter;
+
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
+
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -40,24 +50,38 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
-                    auth -> auth.requestMatchers(
+                    auth -> auth
+                            .requestMatchers(
                             "/listar",
                             "/swagger-ui.html",
                             "/swagger-ui/**",
                             "/v3/api-docs/**",
                             "/h2-console/**",
                             "/authenticate"
-                    ).permitAll()
-                     .anyRequest().authenticated()
+                            ).permitAll()
+                             .requestMatchers("/api/user/**")
+                            .hasAuthority(UserModel.UserRole.USER.name())
+
+                            .requestMatchers("/api/playground/good-morning")
+                            .hasAuthority(UserModel.UserRole.ADMINISTRATOR.name())
+
+                            .requestMatchers("/api/playground/good-night")
+                            .hasAnyAuthority(UserModel.UserRole.ADMINISTRATOR.name(), UserModel.UserRole.USER.name())
+
+                            .anyRequest().authenticated()
             )
             .sessionManagement(
+                    //Nao vamos manter a sessao da aplicaçao, por isso usamos STATELESS
                     session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .headers(
                     headers -> headers.frameOptions(
                             HeadersConfigurer.FrameOptionsConfig::sameOrigin
                     )
-            );
+            )
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
+
 
 
 
