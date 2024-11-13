@@ -1,6 +1,7 @@
 package br.fai.backend.lds.backend.main.security;
 
 import br.fai.backend.lds.backend.main.domain.UserModel;
+import br.fai.backend.lds.backend.main.dto.JwtTokenDto;
 import br.fai.backend.lds.backend.main.port.service.authentication.AuthenticationService;
 
 import org.apache.coyote.BadRequestException;
@@ -32,7 +33,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<UserModel> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<JwtTokenDto> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         String email = authenticationRequest.getEmail();
         String password = authenticationRequest.getPassword();
 
@@ -57,8 +58,9 @@ public class AuthenticationController {
             throw new InternalError("Jwt invalido");
         }
         System.out.println("Jwt criado:" + jwtToken);
+        final JwtTokenDto tokenDto = new JwtTokenDto(jwtToken);
 
-        return ResponseEntity.ok(authenticatedUser);
+        return ResponseEntity.ok(tokenDto);
 
     }
 }

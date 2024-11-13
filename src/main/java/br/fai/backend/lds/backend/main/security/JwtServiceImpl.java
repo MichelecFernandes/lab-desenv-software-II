@@ -11,9 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+//Uma classe utilitaria, que faz validacoes e tambem pode gerar o token. Capaz tbm de txrair poo token
 public class JwtServiceImpl implements JwtService{
 
     private final String secret = "XUFAE3FQG1RLBlgQ93fDSUlj4HfbKi4a1kFl1gDloOg=";
+
+    //Claims sao todos os atributos que conseguimos extrair alguma informações
     @Override
     public String getEmailFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);

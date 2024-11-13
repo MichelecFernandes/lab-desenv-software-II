@@ -21,6 +21,8 @@ import java.security.Security;
 
 @Profile("sec")
 @Component
+
+//A cada request que sera feita sera interceptada por essa classe
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -31,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-
+//Vou verificar o cabecalho e vaçidar se exista a palavra validation e bearer significa que tem um toke que precisa extrair
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");

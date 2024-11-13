@@ -19,6 +19,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.swing.*;
 import java.util.List;
 
+
+//Essa classe vai ser lavantada sempre que rodar a aplicacao por conta do Configuration, ela nasce quando o play acontece
 @Profile("sec")
 @Configuration
 public class SecurityConfig {
