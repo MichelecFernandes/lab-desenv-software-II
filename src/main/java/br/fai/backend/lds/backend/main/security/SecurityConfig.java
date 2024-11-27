@@ -62,6 +62,10 @@ public class SecurityConfig  {
                              .requestMatchers("/api/user/**")
                             .hasAuthority(UserModel.UserRole.USER.name())
 
+                            .requestMatchers("/api/product")
+                            .hasAnyAuthority(UserModel.UserRole.ADMINISTRATOR.name())
+
+
                             .requestMatchers("/api/playground/good-morning")
                             .hasAuthority(UserModel.UserRole.ADMINISTRATOR.name())
 
